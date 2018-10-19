@@ -4,8 +4,6 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
-import java.util.HashMap;
-import java.util.Map;
  
 public class EncryptionSha {
 	public static final String KEY_SHA = "SHA";
@@ -36,21 +34,25 @@ public class EncryptionSha {
 	 * @param s 瑕佸姞瀵嗙殑瀛楃涓�
 	 * @return 鐩愬拰鍔犲瘑鍚庣殑瀛楃涓�
 	 * @throws UnsupportedEncodingException 
+	 * @throws ClassNotFoundException 
 	 */	
-	public static Map<String,String> getResult(String s) throws UnsupportedEncodingException{
-		Map<String,String> map=new HashMap<String,String>();
+	public static void getResult(String s,String passwd) throws UnsupportedEncodingException, ClassNotFoundException{
 		String salt=getSalt();
 		String salt1 = ReturnSaltAndKey(salt);
-		map.put("salt", salt1);//鐩�
-		map.put("password", sha(s+salt));//鍔犲瘑鍚庣殑瀵嗙爜
- 	    return map;
+		Machine_info machine = new Machine_info();
+		machine.setIp(s);
+		machine.setSalt(salt1);
+		machine.setPASS(passwd);
+		machine.setSql("insert into machine_message (ip,salt) values (\"" + machine.getIp() + "\",\"" + machine.getSalt() + "\")");
+		MysqlOperat.executeSQL(machine);
+		System.out.println(sha(s+salt));
 	}
 	
 	/**
 	 * 鐢熸垚闅忔満鐩�
 	 * @return 闅忔満鐢熸垚鐨勭洂
 	 */
-	private static String getSalt() {
+	protected static String getSalt() {
 		SecureRandom random;
 		char[] text = null;
 		try {					
@@ -67,7 +69,7 @@ public class EncryptionSha {
         return new String(text);
     }
 	
-	private static String ReturnSaltAndKey(String str) throws UnsupportedEncodingException {
+	protected static String ReturnSaltAndKey(String str) throws UnsupportedEncodingException {
 		return SelfBase64.toCodingBase64(str);
 	}
 }

@@ -13,7 +13,7 @@ public class SelfBase64 {
 	    static private final int SIXTEENBIT = 16;
 	    static private final int EIGHTBIT = 8;
 	    static private final char PAD = '=';
-	    private static final String key = "ABCDEFGHIJKLM#OPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	    private static final String key = "ABCD?FG{IJKLM#OPQRSTUVWXYZabcdef!hijklmnopqrstuvwxyz0123456789";
 	    private final static char[] base = key.toCharArray();
 
 	    /**
